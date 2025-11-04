@@ -125,7 +125,7 @@ pub fn handler(ctx: Context<ProcessBridgeAndSwap>, params: ProcessBridgeAndSwapP
     msg!("USDC Amount: {}", params.usdc_amount);
     msg!("Min Output: {}", params.min_output_amount);
 
-    // Calculate fee
+    // Calculate swap fee
     let fee_amount = (params.usdc_amount as u128)
         .checked_mul(config.fee_bps as u128)
         .ok_or(SuperSwapError::MathOverflow)?
@@ -139,7 +139,7 @@ pub fn handler(ctx: Context<ProcessBridgeAndSwap>, params: ProcessBridgeAndSwapP
     msg!("Fee Amount: {}", fee_amount);
     msg!("Swap Amount: {}", swap_amount);
 
-    // Transfer USDC from source to program account
+    // Transfer USDC from source to program account for swap
     let transfer_ctx = CpiContext::new(
         ctx.accounts.token_program.to_account_info(),
         Transfer {
